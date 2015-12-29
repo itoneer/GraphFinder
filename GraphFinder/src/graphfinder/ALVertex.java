@@ -33,15 +33,37 @@ public class ALVertex {
     public boolean isNeighbor (ALVertex v) {
         for (Object o : edges) {
             ALEdge e = (ALEdge) o;
-            if (e.getSource().getName().equals(v.getName()) ||
-                    e.getDest().getName().equals(v.getName()))
+            if (e.end(v))
                 return true;
         }
         return false;
     }
     
+    public void deleteNeighbor(ALVertex v) {
+        if(!isNeighbor(v)) return;
+        for (Object o: edges) {
+            ALEdge e = (ALEdge) o;
+            if (e.end(v)) edges.remove(o);
+        }
+    }
+    
     public String getName () {
         return name;
     }
+    
+    public int getTime() {
+        return transTime;
+    }
+    
+    public List getEdges() {
+        return edges;
+    }
+    
+    @Override
+    public boolean equals (Object o) {
+        if (!(o instanceof ALVertex)) return false;
+        else return name.equals(((ALVertex) o).getName());
+    }
+    
     
 }

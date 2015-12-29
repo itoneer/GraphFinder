@@ -36,5 +36,8 @@ public class ALEdge {
         return dest;
     }
     
+    public boolean end (ALVertex v) {
+        return source.equals(v) || dest.equals(v);
+    }
     
 }
