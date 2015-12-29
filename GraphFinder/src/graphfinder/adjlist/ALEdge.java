@@ -17,7 +17,7 @@ public class ALEdge {
     private final int speed1;
     private final int speed2;
     
-    public ALEdge (ALVertex source, ALVertex dest, boolean twoway, int length,
+    ALEdge (ALVertex source, ALVertex dest, boolean twoway, int length,
             int speed1, int speed2) {
         this.source = source;
         this.dest = dest;
@@ -34,6 +34,22 @@ public class ALEdge {
     
     public ALVertex getDest() {
         return dest;
+    }
+    
+    public boolean isTwoWay() {
+        return twoway;
+    }
+    
+    public int getLength() {
+        return length;
+    }
+    
+    public int getSpeed() {
+        return speed1;
+    }
+    
+    public int getRTSpeed() {
+        return speed2;
     }
     
     public boolean end (ALVertex v) {

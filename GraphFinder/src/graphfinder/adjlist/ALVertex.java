@@ -5,7 +5,6 @@
  */
 package graphfinder.adjlist;
 
-import graphfinder.adjlist.ALEdge;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,23 +32,29 @@ public class ALVertex {
             return;
         }
         edges.add(e);
-        v.addNeighbor(this, s, tw, ln, s2, s1);
+        v.addNeighbor(e);
     }
     
-    public boolean isNeighbor (ALVertex v) {
-        for (Object o : edges) {
-            ALEdge e = (ALEdge) o;
-            if (e.end(v))
-                return true;
+    public void addNeighbor (ALEdge e) {
+        if(edges.contains(e)) {
+            System.out.println("Ta krawędź jest już zdefiniowana.");
+            return;
         }
-        return false;
+        edges.add(e);
+    }
+    
+    boolean isNeighbor (ALVertex v) {
+        return edges.stream().anyMatch((o) -> (((ALEdge) o).end(v)));
     }
     
     public void deleteNeighbor(ALVertex v) {
         if(!isNeighbor(v)) return;
         for (Object o: edges) {
             ALEdge e = (ALEdge) o;
-            if (e.end(v)) edges.remove(o);
+            if (e.end(v)) {
+                edges.remove(o);
+                v.deleteNeighbor(this);
+            }
             break;
         }
     }

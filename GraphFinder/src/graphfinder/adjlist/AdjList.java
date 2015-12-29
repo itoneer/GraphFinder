@@ -5,7 +5,6 @@
  */
 package graphfinder.adjlist;
 
-import graphfinder.adjlist.ALVertex;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +13,7 @@ import java.util.List;
  * @author HP
  */
 public class AdjList {
-    private List vlist;
+    private final List vlist;
     
     public AdjList () {
         vlist = new ArrayList();      
@@ -24,16 +23,65 @@ public class AdjList {
         for (Object o: vlist) {
             ALVertex e = (ALVertex) o;
             if (e.equals(v)) return;
-            else vlist.add(v);
         }
+        vlist.add(v);
     } 
     
+    public void addVertex (String name, int time) {
+        ALVertex v = new ALVertex (name, time);
+        addVertex(v);
+    }
+    
+    public ALVertex getVertex (String name) {
+        for (Object o: vlist) {
+            if (((ALVertex) o).getName().equals(name)) return (ALVertex) o;
+        }
+        return null;
+    }
+    
+    public void delVertex (ALVertex v) {
+        vlist.stream().filter((o) -> (v.isNeighbor((ALVertex) o))).forEach((o) -> {
+            v.deleteNeighbor((ALVertex) o);
+        });
+        vlist.remove(v);
+    }
+    
+    public void delVertex(String name) {
+        ALVertex v = new ALVertex (name, 0);
+        delVertex(v);
+    }
+               
+    /**
+     * Adds a directed edge between vertices a and b.
+     * @param a Source of the edge.
+     * @param b Destination of the edge.
+     * @param tw Boolean, indicates whether the edge is two-way or not.
+     * @param ln Integer, shows the "length" of the edge.
+     * @param s1 Integer, shows the "speed" of traversing the edge from a to b.
+     * @param s2 Integer, shows the "speed" of ttraversing the edge from b to a.
+     * @throws IllegalArgumentException
+     */
     public void addEdge (ALVertex a, ALVertex b, boolean tw, int ln, int s1, int s2) 
     throws IllegalArgumentException {
         if (!(vlist.contains(a)) || !(vlist.contains(b))) {
             throw new IllegalArgumentException("Jeden z podanych wierzczołków nie istnieje.");
         }
-        
+        a.addNeighbor(b, true, tw, ln, s1, s2);
+    }
+    
+    public ALEdge getEdge (ALVertex a, ALVertex b) {
+        List e = a.getEdges();
+        for (Object o: e) {
+            if (((ALEdge) o).end(b)) return (ALEdge) o;
+        }
+        return null;
+    }
+    
+    public void delEdge(ALVertex a, ALVertex b) throws IllegalArgumentException {
+        if (!(vlist.contains(a)) || !(vlist.contains(b))) {
+            throw new IllegalArgumentException("Jeden z podanych wierzczołków nie istnieje.");
+        }
+        a.deleteNeighbor(b);
     }
    
     public boolean areNeighbors (ALVertex a, ALVertex b) {
