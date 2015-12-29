@@ -23,8 +23,13 @@ public class ALVertex {
         edges = new ArrayList();
     }
     
-    public void addNeighbor (ALVertex v, boolean s, boolean tw, int ln, int s1, int s2) {
+    public void addNeighbor (ALVertex v, boolean s, boolean tw, int ln, int s1, int s2) 
+    throws IllegalArgumentException {
         ALEdge e;
+        if (tw && s2 == 0){
+            throw new IllegalArgumentException("Zerowa prędkość powrotna przy"
+                    + "drodze dwukierunkowej.");
+        }
         if (s || tw) e = new ALEdge (this, v, tw, ln, s1, s2);
         else e = new ALEdge(v, this, tw, ln, s1, s2);
         if(edges.contains(e)) {
@@ -44,7 +49,7 @@ public class ALVertex {
     }
     
     boolean isNeighbor (ALVertex v) {
-        return edges.stream().anyMatch((o) -> (((ALEdge) o).end(v)));
+        return edges.stream().anyMatch((o) ->(((ALEdge) o).end(v)));
     }
     
     public void deleteNeighbor(ALVertex v) {

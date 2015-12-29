@@ -14,9 +14,11 @@ import java.util.List;
  */
 public class AdjList {
     private final List vlist;
+    private final List edges;
     
     public AdjList () {
-        vlist = new ArrayList();      
+        vlist = new ArrayList();
+        edges = new ArrayList();
     }
     
     public void addVertex(ALVertex v) {
@@ -64,9 +66,12 @@ public class AdjList {
     public void addEdge (ALVertex a, ALVertex b, boolean tw, int ln, int s1, int s2) 
     throws IllegalArgumentException {
         if (!(vlist.contains(a)) || !(vlist.contains(b))) {
-            throw new IllegalArgumentException("Jeden z podanych wierzczołków nie istnieje.");
+            throw new IllegalArgumentException("Jeden z podanych wierzchołków nie istnieje.");
         }
-        a.addNeighbor(b, true, tw, ln, s1, s2);
+        ALEdge e = new ALEdge(a, b, tw, ln,  s1, s2);
+        if (edges.contains(e)) return;
+        a.addNeighbor(e);
+        b.addNeighbor(e);
     }
     
     public ALEdge getEdge (ALVertex a, ALVertex b) {
@@ -89,14 +94,17 @@ public class AdjList {
     }
     
     public String listNeighbors (ALVertex v) {
-        String out;
-        if (!vlist.contains(v)) out = "Podany wirezchołek nie istnieje.";
+        String out = null;
+        if (!vlist.contains(v)) out = "Podany wierzchołek nie istnieje.";
         else {
-            out = "Wierzchołki sąsiadujące z " + v.getName() + " to:\n";
             for (Object o: vlist) {
-                if (v.isNeighbor((ALVertex) o)) out = out + ((ALVertex) o).getName() + "\n";   
+                if (v.isNeighbor((ALVertex) o) && !v.equals((ALVertex) o)) {
+                    if (out == null) out = "Wierzchołki sąsiadujące z " + v.getName() + " to:\n";
+                    out = out + ((ALVertex) o).getName() + "\n";
+                }   
             }
         }
+        if (out == null) out = "Podany wierzchołek nie posiada sąsiadów.";
         return out;
     }
 

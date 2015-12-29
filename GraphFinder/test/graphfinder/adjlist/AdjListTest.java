@@ -82,11 +82,12 @@ public class AdjListTest {
     @Test
     public void testDelVertex_ALVertex() {
         System.out.println("delVertex");
-        ALVertex v = null;
+        ALVertex v = new ALVertex ("A", 10);
         AdjList instance = new AdjList();
+        instance.addVertex(v);
+        if(instance.getVertex("A") == null) fail();
         instance.delVertex(v);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        if (instance.getVertex("A") != null) fail("Element still exists");
     }
 
     /**
@@ -95,11 +96,12 @@ public class AdjListTest {
     @Test
     public void testDelVertex_String() {
         System.out.println("delVertex");
-        String name = "";
+        ALVertex v = new ALVertex ("A", 10);
         AdjList instance = new AdjList();
-        instance.delVertex(name);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        instance.addVertex(v);
+        if(instance.getVertex("A") == null) fail();
+        instance.delVertex("A");
+        if (instance.getVertex("A") != null) fail("Element still exists");
     }
 
     /**
@@ -108,16 +110,17 @@ public class AdjListTest {
     @Test
     public void testAddEdge() {
         System.out.println("addEdge");
-        ALVertex a = null;
-        ALVertex b = null;
+        ALVertex a = new ALVertex("A", 5);
+        ALVertex b = new ALVertex("B", 2);
         boolean tw = false;
-        int ln = 0;
-        int s1 = 0;
+        int ln = 5;
+        int s1 = 7;
         int s2 = 0;
         AdjList instance = new AdjList();
+        instance.addVertex(a);
+        instance.addVertex(b);
         instance.addEdge(a, b, tw, ln, s1, s2);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        if(!a.isNeighbor(b)) fail("Edge does not exist");
     }
 
     /**
@@ -126,14 +129,15 @@ public class AdjListTest {
     @Test
     public void testGetEdge() {
         System.out.println("getEdge");
-        ALVertex a = null;
-        ALVertex b = null;
+        ALVertex a = new ALVertex("A", 5);
+        ALVertex b = new ALVertex("B", 2);
         AdjList instance = new AdjList();
-        ALEdge expResult = null;
-        ALEdge result = instance.getEdge(a, b);
+        instance.addVertex(a);
+        instance.addVertex(b);
+        instance.addEdge(a, b, false, 17, 5, 0);
+        ALEdge expResult = (ALEdge) a.getEdges().get(0);
+        ALEdge result = instance.getEdge(a,b);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -142,12 +146,14 @@ public class AdjListTest {
     @Test
     public void testDelEdge() {
         System.out.println("delEdge");
-        ALVertex a = null;
-        ALVertex b = null;
+        ALVertex a = new ALVertex("A", 5);
+        ALVertex b = new ALVertex("B", 2);
         AdjList instance = new AdjList();
+        instance.addVertex(a);
+        instance.addVertex(b);
+        instance.addEdge(a, b, false, 17, 5, 0);
         instance.delEdge(a, b);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        if(a.isNeighbor(b)) fail("Edge not deleted");
     }
 
     /**
@@ -156,14 +162,20 @@ public class AdjListTest {
     @Test
     public void testAreNeighbors() {
         System.out.println("areNeighbors");
-        ALVertex a = null;
-        ALVertex b = null;
+        ALVertex a = new ALVertex("A", 5);
+        ALVertex b = new ALVertex("B", 2);
         AdjList instance = new AdjList();
-        boolean expResult = false;
-        boolean result = instance.areNeighbors(a, b);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        instance.addVertex(a);
+        instance.addVertex(b);
+        instance.addEdge(a, b, false, 17, 5, 0);
+        boolean exp1 = true;
+        boolean r1 = instance.areNeighbors(a, b);
+        assertEquals(exp1, r1);
+        ALVertex c = new ALVertex("C", 6);
+        instance.addVertex(c);
+        boolean exp2 = false;
+        boolean r2 = instance.areNeighbors(a, c);
+        assertEquals(exp2, r2);
     }
 
     /**
@@ -172,13 +184,18 @@ public class AdjListTest {
     @Test
     public void testListNeighbors() {
         System.out.println("listNeighbors");
-        ALVertex v = null;
+        ALVertex a = new ALVertex("A", 5);
+        ALVertex b = new ALVertex("B", 2);
         AdjList instance = new AdjList();
-        String expResult = "";
-        String result = instance.listNeighbors(v);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        instance.addVertex(a);
+        instance.addVertex(b);
+        instance.addEdge(a, b, false, 17, 5, 0);
+        ALVertex c = new ALVertex("C", 6);
+        ALVertex d = new ALVertex("D", 12);
+        instance.addVertex(c);
+        System.out.println(instance.listNeighbors(a));
+        System.out.println(instance.listNeighbors(c));
+        System.out.println(instance.listNeighbors(d));
     }
     
 }
