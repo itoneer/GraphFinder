@@ -40,4 +40,10 @@ public class ALEdge {
         return source.equals(v) || dest.equals(v);
     }
     
+    @Override
+    public boolean equals (Object o) {
+        if (!(o instanceof ALEdge)) return false;
+        else return source.equals(((ALEdge) o).getSource()) || dest.equals(((ALEdge) o).getDest());
+    }
+    
 }

@@ -27,6 +27,7 @@ public class ALVertex {
         ALEdge e;
         if (s || tw) e = new ALEdge (this, v, tw, ln, s1, s2);
         else e = new ALEdge(v, this, tw, ln, s1, s2);
+        if(edges.contains(e)) return;
         edges.add(e);
     }
     
