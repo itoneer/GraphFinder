@@ -62,4 +62,10 @@ public class ALEdge {
         else return source.equals(((ALEdge) o).getSource()) || dest.equals(((ALEdge) o).getDest());
     }
     
+    public int getTime(ALVertex v) {
+        if (source.equals(v)) return length/speed1;
+        else if (dest.equals(v) && twoway) return length/speed2;
+        else return -1;
+    }
+    
 }

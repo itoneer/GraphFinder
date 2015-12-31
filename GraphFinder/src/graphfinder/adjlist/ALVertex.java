@@ -76,6 +76,13 @@ public class ALVertex {
         return edges;
     }
     
+    public ALEdge getNeighbor(ALVertex v) {
+        for (Object o: edges) {
+            if (((ALEdge)o).end(v) && ((ALEdge)o).end(this)) return (ALEdge) o;
+        }
+        return null;
+    }
+    
     @Override
     public boolean equals (Object o) {
         if (!(o instanceof ALVertex)) return false;

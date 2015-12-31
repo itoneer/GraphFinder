@@ -197,5 +197,25 @@ public class AdjListTest {
         System.out.println(instance.listNeighbors(c));
         System.out.println(instance.listNeighbors(d));
     }
+
+    /**
+     * Test of isTraversable method, of class AdjList.
+     */
+    @Test
+    public void testIsTraversable() {
+        System.out.println("isTraversable");
+        ALVertex a = new ALVertex("A", 5);
+        ALVertex b = new ALVertex("B", 2);
+        AdjList instance = new AdjList();
+        instance.addVertex(a);
+        instance.addVertex(b);
+        instance.addEdge(a, b, false, 17, 5, 0);
+        boolean expResult = true;
+        boolean result = instance.isTraversable(a, b);
+        assertEquals(expResult, result);
+        expResult = false;
+        result =  instance.isTraversable(b, a);
+        assertEquals(expResult, result);
+    }
     
 }

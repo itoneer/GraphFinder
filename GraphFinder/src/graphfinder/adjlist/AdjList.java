@@ -41,6 +41,10 @@ public class AdjList {
         return null;
     }
     
+   public ALVertex getVertex (int i) {
+       return (ALVertex) vlist.get(i);
+   }
+    
     public void delVertex (ALVertex v) {
         vlist.stream().filter((o) -> (v.isNeighbor((ALVertex) o))).forEach((o) -> {
             v.deleteNeighbor((ALVertex) o);
@@ -107,5 +111,20 @@ public class AdjList {
         if (out == null) out = "Podany wierzchołek nie posiada sąsiadów.";
         return out;
     }
-
+    
+    public boolean isTraversable (ALVertex a, ALVertex b) {
+        if (!areNeighbors(a,b)) return false;
+        else {
+            ALEdge e = a.getNeighbor(b);
+            return e.getSource().equals(a) || (e.getSource().equals(b) && e.isTwoWay());
+        }
+    }
+    
+    public int getAmountOfNodes() {
+        return vlist.size();
+    }
+    
+    public List getVertices() {
+        return vlist;
+    }
 }
