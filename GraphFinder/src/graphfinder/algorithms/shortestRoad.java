@@ -6,12 +6,13 @@
 package graphfinder.algorithms;
 
 import graphfinder.adjlist.ALVertex;
+import graphfinder.adjlist.AdjList;
 import java.util.List;
 
 /**
  *
  * @author HP
  */
-public interface shortestRoad {
-    public List road(ALVertex a, ALVertex b);
+public interface ShortestRoad {
+    public List road(ALVertex a, ALVertex b, AdjList l);
 }

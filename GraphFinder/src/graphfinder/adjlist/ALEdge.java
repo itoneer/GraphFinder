@@ -68,4 +68,10 @@ public class ALEdge {
         else return -1;
     }
     
+    public ALVertex getOtherEnd (ALVertex v) {
+        if (!end(v)) return null;
+        if (dest.equals(v)) return source;
+        else return dest;
+    }
+    
 }
