@@ -38,23 +38,22 @@ public class ShortestDijkstra implements ShortestRoad {
                 }
                 for (Object o2 : ((ALVertex) o).getEdges()) {
                     ALVertex v = ((ALEdge) o2).getOtherEnd((ALVertex) o);
-                    if (visited.contains(v) || !l.isTraversable((ALVertex) o, v)) {
+                    if (visited.contains(v) || !l.isTraversable((ALVertex) o, v) ||
+                            dist.isCalculated((ALVertex) o, v)) {
                         continue;
                     }
                     if (!((ALVertex) o).equals(a)) {
                         ln += ((ALVertex) o).getTime();
                     }
                     ln += ((ALEdge) o2).getTime((ALVertex) o);
-                    if (dist.isCalculated((ALVertex) o, v)) {
-                        dist.updateDistance((ALVertex) o, v, ln);
-                    } else {
-                        dist.addDistance((ALVertex) o, v, ln);
-                    }
+                    dist.setPrevious((ALVertex)o, v);
+                    int d = dist.getDist(a, (ALVertex)o);
+                    dist.addDistance(a, v, d + ln);
                 }
             }
-            visited.add(l.getVertex(ln));
+            visited.add(dist.findClosestFrom(a, l.getVertices(), visited));
+            
         }
-
         List road = new ArrayList();
 
         return road;
