@@ -48,7 +48,8 @@ public class Distances {
         return -1;
     }
 
-    public double getDist (int x) {
+    public double getDist (int x) throws ArrayIndexOutOfBoundsException {
+        if (x >= start.size()) throw new ArrayIndexOutOfBoundsException();
         return (double) dist.get(x);
     }
 
@@ -61,15 +62,6 @@ public class Distances {
             return true;
         }
         return false;
-    }
-
-    public void updateDistance(ALVertex a, ALVertex b, int x) {
-        for (int i = 0; i < start.size(); i++) {
-            if (((ALVertex) start.get(i)).equals(a)
-                    && ((ALVertex) end.get(i)).equals(b) && (double) dist.get(i) != 0) {
-                dist.set(i, x);
-            }
-        }
     }
 
     /**
@@ -122,7 +114,7 @@ public class Distances {
         }
         start.add(a);
         end.add(b);
-        dist.add(0);
+        dist.add(0.0);
     }
 
     /**
@@ -133,7 +125,7 @@ public class Distances {
      */
     public ALVertex getPrevious(ALVertex b) {
         for (int i = 0; i < start.size(); i++) {
-            if ((double) dist.get(i) == 0
+            if ((double) dist.get(i) == 0.0
                     && !((ALVertex) start.get(i)).equals((ALVertex) end.get(i))) {
                 return (ALVertex) start.get(i);
             }

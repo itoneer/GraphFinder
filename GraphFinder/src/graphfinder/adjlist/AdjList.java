@@ -99,7 +99,7 @@ public class AdjList {
 
     public void delEdge(ALVertex a, ALVertex b) throws IllegalArgumentException {
         if (!(vlist.contains(a)) || !(vlist.contains(b))) {
-            throw new IllegalArgumentException("Jeden z podanych wierzczołków nie istnieje.");
+            throw new IllegalArgumentException("Jeden z podanych wierzchołków nie istnieje.");
         }
         a.deleteNeighbor(b);
     }

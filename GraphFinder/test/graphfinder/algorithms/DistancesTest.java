@@ -68,14 +68,10 @@ public class DistancesTest {
         System.out.println("getDist");
         ALVertex a = new ALVertex("A", 5);
         ALVertex b = new ALVertex("B", 2);
-        boolean tw = false;
-        int ln = 5;
-        int s1 = 10;
-        int s2 = 0;
         AdjList l = new AdjList();
         l.addVertex(a);
         l.addVertex(b);
-        l.addEdge(a, b, tw, ln, s1, s2);
+        l.addEdge(a, b, false, 5, 10, 0);
         Distances instance = new Distances();
         instance.addDistance(a, b, a.getNeighbor(b).getTime(a));
         double expResult = 0.5;
@@ -89,11 +85,10 @@ public class DistancesTest {
     @Test
     public void testGetDist_int() {
         System.out.println("getDist");
-        int x = 3;
+        int x = 2;
         ALVertex a = new ALVertex("A", 5);
         ALVertex b = new ALVertex("B", 2);
         ALVertex c = new ALVertex("C", 4);
-        ALVertex d = new ALVertex("D", 1);
         AdjList l = new AdjList();
         l.addVertex(a);
         l.addVertex(b);
@@ -107,8 +102,6 @@ public class DistancesTest {
         double expResult = 5;
         double result = instance.getDist(x);
         assertEquals(expResult, result, 0);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -117,29 +110,22 @@ public class DistancesTest {
     @Test
     public void testIsCalculated() {
         System.out.println("isCalculated");
-        ALVertex a = null;
-        ALVertex b = null;
+        ALVertex a = new ALVertex("A", 5);
+        ALVertex b = new ALVertex("B", 2);
+        ALVertex c = new ALVertex("C", 4);
+        AdjList l = new AdjList();
+        l.addVertex(a);
+        l.addVertex(b);
+        l.addVertex(c);
+        l.addEdge(a, b, false, 5, 10, 0);
         Distances instance = new Distances();
-        boolean expResult = false;
+        instance.addDistance(a, b, a.getNeighbor(b).getTime(a));
+        boolean expResult = true;
         boolean result = instance.isCalculated(a, b);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of updateDistance method, of class Distances.
-     */
-    @Test
-    public void testUpdateDistance() {
-        System.out.println("updateDistance");
-        ALVertex a = null;
-        ALVertex b = null;
-        int x = 0;
-        Distances instance = new Distances();
-        instance.updateDistance(a, b, x);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        expResult = false;
+        result = instance.isCalculated(a, c);
+        assertEquals(expResult, result);
     }
 
     /**
@@ -148,13 +134,24 @@ public class DistancesTest {
     @Test
     public void testGetShortestDistance() {
         System.out.println("getShortestDistance");
-        ALVertex b = null;
+        ALVertex a = new ALVertex("A", 5);
+        ALVertex b = new ALVertex("B", 2);
+        ALVertex c = new ALVertex("C", 4);
+        AdjList l = new AdjList();
+        l.addVertex(a);
+        l.addVertex(b);
+        l.addVertex(c);
+        l.addEdge(a, b, false, 5, 10, 0);
+        l.addEdge(a, c, true, 25, 10, 5);
+        l.addEdge(b, c, true, 5, 20, 20);
         Distances instance = new Distances();
-        double expResult = 0;
-        double result = instance.getShortestDistance(b);
+        instance.addDistance(a, b, a.getNeighbor(b).getTime(a));
+        instance.addDistance(a, c, a.getNeighbor(c).getTime(a));
+        instance.addDistance(a, c, a.getNeighbor(c).getTime(c));
+        instance.addDistance(b, c, b.getNeighbor(c).getTime(b));
+        double expResult = 0.25;
+        double result = instance.getShortestDistance(c);
         assertEquals(expResult, result, 0);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -163,13 +160,25 @@ public class DistancesTest {
     @Test
     public void testGetClosestStart() {
         System.out.println("getClosestStart");
-        ALVertex b = null;
+        ALVertex a = new ALVertex("A", 5);
+        ALVertex b = new ALVertex("B", 2);
+        ALVertex c = new ALVertex("C", 4);
+        AdjList l = new AdjList();
+        l.addVertex(a);
+        l.addVertex(b);
+        l.addVertex(c);
+        l.addEdge(a, b, false, 5, 10, 0);
+        l.addEdge(a, c, true, 25, 10, 5);
+        l.addEdge(b, c, true, 5, 20, 20);
         Distances instance = new Distances();
-        ALVertex expResult = null;
-        ALVertex result = instance.getClosestStart(b);
+        instance.addDistance(a, b, a.getNeighbor(b).getTime(a));
+        instance.addDistance(a, c, a.getNeighbor(c).getTime(a));
+        instance.addDistance(a, c, a.getNeighbor(c).getTime(c));
+        instance.addDistance(b, c, b.getNeighbor(c).getTime(b));
+        instance.addDistance(b, c, b.getNeighbor(c).getTime(c));
+        ALVertex expResult = b;
+        ALVertex result = instance.getClosestStart(c);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -178,12 +187,14 @@ public class DistancesTest {
     @Test
     public void testSetPrevious() {
         System.out.println("setPrevious");
-        ALVertex a = null;
-        ALVertex b = null;
+        ALVertex a = new ALVertex("A", 5);
+        ALVertex b = new ALVertex("B", 2);
+        AdjList l = new AdjList();
+        l.addVertex(a);
+        l.addVertex(b);
+        l.addEdge(a, b, false, 5, 10, 0);
         Distances instance = new Distances();
         instance.setPrevious(a, b);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -192,13 +203,17 @@ public class DistancesTest {
     @Test
     public void testGetPrevious() {
         System.out.println("getPrevious");
-        ALVertex b = null;
+        ALVertex a = new ALVertex("A", 5);
+        ALVertex b = new ALVertex("B", 2);
+        AdjList l = new AdjList();
+        l.addVertex(a);
+        l.addVertex(b);
+        l.addEdge(a, b, false, 5, 10, 0);
         Distances instance = new Distances();
-        ALVertex expResult = null;
+        instance.setPrevious(a, b);
+        ALVertex expResult = a;
         ALVertex result = instance.getPrevious(b);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -206,13 +221,25 @@ public class DistancesTest {
      */
     @Test
     public void testGetClosestEnd() {
-        System.out.println("getClosestEnd");
+        System.out.println("getClosestEnd");ALVertex a = new ALVertex("A", 5);
+        ALVertex b = new ALVertex("B", 2);
+        ALVertex c = new ALVertex("C", 4);
+        AdjList l = new AdjList();
+        l.addVertex(a);
+        l.addVertex(b);
+        l.addVertex(c);
+        l.addEdge(a, b, false, 5, 10, 0);
+        l.addEdge(a, c, true, 25, 10, 5);
+        l.addEdge(b, c, true, 5, 20, 20);
         Distances instance = new Distances();
-        ALVertex expResult = null;
+        instance.addDistance(a, b, a.getNeighbor(b).getTime(a));
+        instance.addDistance(a, c, a.getNeighbor(c).getTime(a));
+        instance.addDistance(a, c, a.getNeighbor(c).getTime(c));
+        instance.addDistance(b, c, b.getNeighbor(c).getTime(b));
+        instance.addDistance(b, c, b.getNeighbor(c).getTime(c));
+        ALVertex expResult = c;
         ALVertex result = instance.getClosestEnd();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -221,10 +248,24 @@ public class DistancesTest {
     @Test
     public void testClear() {
         System.out.println("clear");
+        ALVertex a = new ALVertex("A", 5);
+        ALVertex b = new ALVertex("B", 2);
+        ALVertex c = new ALVertex("C", 4);
+        AdjList l = new AdjList();
+        l.addVertex(a);
+        l.addVertex(b);
+        l.addVertex(c);
+        l.addEdge(a, b, false, 5, 10, 0);
+        l.addEdge(a, c, true, 25, 10, 5);
+        l.addEdge(b, c, true, 5, 20, 20);
         Distances instance = new Distances();
+        instance.addDistance(a, b, a.getNeighbor(b).getTime(a));
+        instance.addDistance(a, c, a.getNeighbor(c).getTime(a));
+        instance.addDistance(a, c, a.getNeighbor(c).getTime(c));
+        instance.addDistance(b, c, b.getNeighbor(c).getTime(b));
+        instance.addDistance(b, c, b.getNeighbor(c).getTime(c));
         instance.clear();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        if (instance.isCalculated(a, b)) fail("Distances not cleared");
     }
     
 }
