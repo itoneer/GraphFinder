@@ -25,7 +25,7 @@ public class Distances {
         dist = new ArrayList();
     }
 
-    public void addDistance(ALVertex a, ALVertex b, int x) {
+    public void addDistance(ALVertex a, ALVertex b, double x) {
         start.add(a);
         end.add(b);
         dist.add(x);
@@ -38,56 +38,71 @@ public class Distances {
      * @param b end vertex
      * @return distance from a to b if calculated, 0 otherwise.
      */
-    public int getDist(ALVertex a, ALVertex b) {
+    public double getDist(ALVertex a, ALVertex b) {
         for (int i = 0; i < start.size(); i++) {
             if (((ALVertex) start.get(i)).equals(a)
-                    || ((ALVertex) end.get(i)).equals(b)) {
-                return (int) dist.get(i);
+                    && ((ALVertex) end.get(i)).equals(b) && (double) dist.get(i) != 0) {
+                return (double) dist.get(i);
             }
         }
         return -1;
     }
 
-    public int getDist(int x) {
-        return (int) dist.get(x);
+    public double getDist (int x) {
+        return (double) dist.get(x);
     }
 
     public boolean isCalculated(ALVertex a, ALVertex b) {
         for (int i = 0; i < start.size(); i++) {
-            if (!((ALVertex) start.get(i)).equals(a) || !((ALVertex) end.get(i)).equals(b)) {
+            if (!((ALVertex) start.get(i)).equals(a)
+                    || !((ALVertex) end.get(i)).equals(b) || (double) dist.get(i) == 0) {
                 continue;
-            } else {
-                return true;
             }
+            return true;
         }
         return false;
     }
 
     public void updateDistance(ALVertex a, ALVertex b, int x) {
         for (int i = 0; i < start.size(); i++) {
-            if (((ALVertex) start.get(i)).equals(a) || ((ALVertex) end.get(i)).equals(b)) {
+            if (((ALVertex) start.get(i)).equals(a)
+                    && ((ALVertex) end.get(i)).equals(b) && (double) dist.get(i) != 0) {
                 dist.set(i, x);
             }
         }
     }
 
-    public int getShortestDistance(ALVertex b) {
-        int l = 0;
+    /**
+     * Finds the closest distance from an end vertex.
+     *
+     * @param b end vertex
+     * @return shortest distance from b, -1 if none are registered
+     */
+    public double getShortestDistance(ALVertex b) {
+        double l = 0;
         for (int i = 0; i < dist.size(); i++) {
             if (((ALVertex) end.get(i)).equals(b)) {
-                if (l == 0 || (l > (int) dist.get(i) && (int) dist.get(i) != 0)) {
-                    l = (int) dist.get(i);
+                if (l == 0 || (l > (double) dist.get(i) && (double) dist.get(i) != 0)) {
+                    l = (double) dist.get(i);
                 }
             }
         }
-        return -1;
+        return (l != 0 ? l : -1);
     }
 
-    public ALVertex getClosest(ALVertex b) {
-        int s = getShortestDistance(b);
-        for (int i = 0; i < start.size(); i++) {
-            if (s == (int) dist.get(i)) {
-                return (ALVertex) start.get(i);
+    /**
+     * Returns starting vertex closest to b.
+     *
+     * @param b end vertex
+     * @return start vertex closest to b, null if none are registered
+     */
+    public ALVertex getClosestStart(ALVertex b) {
+        double s = getShortestDistance(b);
+        if (s != -1) {
+            for (int i = 0; i < start.size(); i++) {
+                if (s == (double) dist.get(i) && (double) dist.get(i) != 0) {
+                    return (ALVertex) start.get(i);
+                }
             }
         }
         return null;
@@ -110,34 +125,47 @@ public class Distances {
         dist.add(0);
     }
 
+    /**
+     * Returns the previous vertex for given end vertex b.
+     *
+     * @param b end vertex
+     * @return starting vertex for b, null if none is registered
+     */
     public ALVertex getPrevious(ALVertex b) {
         for (int i = 0; i < start.size(); i++) {
-            if ((int) dist.get(i) == 0
+            if ((double) dist.get(i) == 0
                     && !((ALVertex) start.get(i)).equals((ALVertex) end.get(i))) {
                 return (ALVertex) start.get(i);
             }
         }
         return null;
     }
-    
-   public ALVertex findClosestFrom(ALVertex s, List a, List b) {
-       List left = new ArrayList();
-       int c = 0;
-       left.addAll(a);
-       left.removeAll(b);
-       
-       for (int i = 0; i < start.size(); i++) {
-           if (((ALVertex)start.get(i)).equals(s) && left.contains(end.get(i)) &&
-                   (c == 0 || c < (int) dist.get(i)))
-               c = (int) dist.get(i);
-       }
-       
-       for (int i = 0; i < start.size(); i++) {
-            if (c == (int) dist.get(i)) {
-                return (ALVertex) start.get(i);
+
+    /**
+     * Returns the end vertex from the shortest found distance.
+     *
+     * @return end vertex, null if no viable found
+     */
+    public ALVertex getClosestEnd() {
+        double x = 0;
+        for (int i = 0; i < start.size(); i++) {
+            if (x == 0 || (x > (double) dist.get(i) && (double) dist.get(i) != 0)) {
+                x = (double) dist.get(i);
+            }
+        }
+
+        for (int i = 0; i < start.size(); i++) {
+            if ((double) dist.get(i) == x && (double) dist.get(i) != 0) {
+                return (ALVertex) end.get(i);
             }
         }
         return null;
-       
-   }
+    }
+
+    public void clear() {
+        start.clear();
+        end.clear();
+        dist.clear();
+    }
+
 }

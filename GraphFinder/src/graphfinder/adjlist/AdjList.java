@@ -84,6 +84,7 @@ public class AdjList {
         }
         a.addNeighbor(e);
         b.addNeighbor(e);
+        edges.add(e);
     }
 
     public ALEdge getEdge(ALVertex a, ALVertex b) {

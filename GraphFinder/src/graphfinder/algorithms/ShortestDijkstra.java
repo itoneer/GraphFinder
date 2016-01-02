@@ -21,8 +21,9 @@ public class ShortestDijkstra implements ShortestRoad {
     public List road(ALVertex a, ALVertex b, AdjList l) {
         int nodes = l.getAmountOfNodes();
         Distances dist = new Distances();
+        Distances r = new Distances();
         dist.addDistance(a, a, 0);
-        int ln;
+        double ln;
         ALVertex curr = a;
         List visited = new ArrayList();
         visited.add(a);
@@ -32,29 +33,33 @@ public class ShortestDijkstra implements ShortestRoad {
         }
         while (!curr.equals(b)) {
             for (Object o : visited) {
-                ln = dist.getDist(a, (ALVertex) o);
+                ln = r.getDist(a, (ALVertex) o);
                 if (ln == -1) {
                     throw new IllegalArgumentException();
                 }
                 for (Object o2 : ((ALVertex) o).getEdges()) {
                     ALVertex v = ((ALEdge) o2).getOtherEnd((ALVertex) o);
-                    if (visited.contains(v) || !l.isTraversable((ALVertex) o, v) ||
-                            dist.isCalculated((ALVertex) o, v)) {
+                    if (visited.contains(v) || !l.isTraversable((ALVertex) o, v)) {
                         continue;
                     }
                     if (!((ALVertex) o).equals(a)) {
                         ln += ((ALVertex) o).getTime();
                     }
                     ln += ((ALEdge) o2).getTime((ALVertex) o);
-                    dist.setPrevious((ALVertex)o, v);
-                    int d = dist.getDist(a, (ALVertex)o);
-                    dist.addDistance(a, v, d + ln);
+                    dist.addDistance((ALVertex) o, v, ln);
                 }
             }
-            visited.add(dist.findClosestFrom(a, l.getVertices(), visited));
-            
+            curr = dist.getClosestEnd();
+            visited.add(curr);
+            r.addDistance(a, curr, dist.getDist(dist.getPrevious(curr),
+                            curr));
+            dist.clear();
         }
         List road = new ArrayList();
+        while (!curr.equals(a)) {       //TODO
+            road.add(r.getPrevious(curr));
+            curr = r.getPrevious(curr);
+        }
 
         return road;
     }

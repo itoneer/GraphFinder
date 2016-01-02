@@ -69,11 +69,20 @@ public class ALEdge {
         }
     }
 
-    public int getTime(ALVertex v) {
+    /**
+     * Returns time needed to traverse from v to the other end of the edge.
+     * 
+     * Requires the edge to be traversable from v.
+     * 
+     * @param v the starting vertex
+     * @return time needed to travel from v to the other end, -1 if travel
+     * is not possible
+     */
+    public double getTime(ALVertex v) {
         if (source.equals(v)) {
-            return length / speed1;
+            return (double) length / (double) speed1;
         } else if (dest.equals(v) && twoway) {
-            return length / speed2;
+            return (double) length / (double) speed2;
         } else {
             return -1;
         }
