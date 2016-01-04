@@ -96,6 +96,10 @@ public class AdjList {
         }
         return null;
     }
+    
+    public List getEdges() {
+        return edges;
+    }
 
     public void delEdge(ALVertex a, ALVertex b) throws IllegalArgumentException {
         if (!(vlist.contains(a)) || !(vlist.contains(b))) {

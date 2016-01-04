@@ -41,22 +41,26 @@ public class Distances {
     public double getDist(ALVertex a, ALVertex b) {
         for (int i = 0; i < start.size(); i++) {
             if (((ALVertex) start.get(i)).equals(a)
-                    && ((ALVertex) end.get(i)).equals(b) && (double) dist.get(i) != 0) {
+                    && ((ALVertex) end.get(i)).equals(b) && (double) dist.get(i) != 0.0) {
                 return (double) dist.get(i);
+            }
+            else if (((ALVertex) start.get(i)).equals(a) &&
+                    ((ALVertex)end.get(i)).equals(b) &&
+                    start.get(i).equals(end.get(i))) {
+                return 0.0;
             }
         }
         return -1;
     }
 
     public double getDist (int x) throws ArrayIndexOutOfBoundsException {
-        if (x >= start.size()) throw new ArrayIndexOutOfBoundsException();
         return (double) dist.get(x);
     }
 
     public boolean isCalculated(ALVertex a, ALVertex b) {
         for (int i = 0; i < start.size(); i++) {
             if (!((ALVertex) start.get(i)).equals(a)
-                    || !((ALVertex) end.get(i)).equals(b) || (double) dist.get(i) == 0) {
+                    || !((ALVertex) end.get(i)).equals(b) || (double) dist.get(i) != 0) {
                 continue;
             }
             return true;
@@ -112,6 +116,14 @@ public class Distances {
         if (a.equals(b)) {
             return;
         }
+        else if (getPrevious(b) != null) {
+            for (int i = 0; i < end.size(); i++) {
+                if (((ALVertex)end.get(i)).equals(b) && (double)dist.get(i) == 0.0) {
+                    start.set(i, a);
+                    return;
+                }
+            }
+        }
         start.add(a);
         end.add(b);
         dist.add(0.0);
@@ -125,8 +137,8 @@ public class Distances {
      */
     public ALVertex getPrevious(ALVertex b) {
         for (int i = 0; i < start.size(); i++) {
-            if ((double) dist.get(i) == 0.0
-                    && !((ALVertex) start.get(i)).equals((ALVertex) end.get(i))) {
+            if (((ALVertex)end.get(i)).equals(b) &&
+                    (double) dist.get(i) == 0.0) {
                 return (ALVertex) start.get(i);
             }
         }

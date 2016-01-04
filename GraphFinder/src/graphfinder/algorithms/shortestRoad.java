@@ -14,5 +14,6 @@ import java.util.List;
  * @author HP
  */
 public interface ShortestRoad {
-    public List road(ALVertex a, ALVertex b, AdjList l);
+    public List road(ALVertex a, ALVertex b, AdjList l);   
+    public List road(String a, String b, AdjList l);
 }
