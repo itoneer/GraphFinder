@@ -5,6 +5,11 @@
  */
 package graphfinder;
 
+import graphfinder.adjlist.AdjList;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author HP
@@ -15,7 +20,21 @@ public class GraphFinder {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        BufferedReader in;
+        try {
+            in = new BufferedReader(new FileReader(args[1]));
+        } catch (FileNotFoundException e) {
+            System.out.println("Nie znaleziono pliku źródłowego.");
+            return;
+        }
+        AdjList l = new AdjList();
+        try {
+            GraphConstructor.makeGraph(l, in);
+        } catch (IOException ex) {
+            System.out.println("Wystąpił błąd pliku.");
+            return;
+        }
+        List road = new ArrayList();
     }
     
 }
