@@ -42,14 +42,13 @@ public class ShortestDijkstra implements ShortestRoad {
                         ln += ((ALVertex) o).getTime(); //jeżeli badany wierzch. nie jest
                     }                                   //startowy, dodajemy czas przejazdu
                     ln += ((ALEdge) o2).getTime((ALVertex) o);
-                    dist.addDistance(a, v, ln);
-                    dist.addDistance((ALVertex) o, v, ((ALEdge) o2).getTime((ALVertex) o));
+                    dist.addDistance((ALVertex) o, v, ln);
                 }
             }
             curr = dist.getClosestEnd();
             r.setPrevious(dist.getClosestStart(curr), curr);
             visited.add(curr);
-            r.addDistance(a, curr, dist.getDist(r.getPrevious(curr),
+            r.addDistance(a, curr, dist.getDist(dist.getClosestStart(curr),
                     curr));
             dist.clear();
         }
