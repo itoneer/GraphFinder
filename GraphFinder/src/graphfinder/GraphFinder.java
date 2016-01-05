@@ -49,10 +49,10 @@ public class GraphFinder {
         }
         List road;
         ShortestRoad d;
-        if (args[1].equals("-s") || args[1].equals("-S"))
-            d = new ShortestOwn();
-        else if (args.length == 1 || args[1].equals("-d") || args[1].equals("-D"))
+        if (args.length == 1 || args[1].equals("-d") || args[1].equals("-D"))
             d = new ShortestDijkstra();
+        else if (args[1].equals("-s") || args[1].equals("-S"))
+            d = new ShortestOwn();
         else {
             System.out.println("GraphFinder - wyszukiwanie najkrótszej drogi w grafie");
             System.out.println("Działanie:");
@@ -73,6 +73,11 @@ public class GraphFinder {
             return;
         }
         road = d.road(se[0], se[1], l);
+        if (road == null) {
+            System.out.println("Nie udało się znaleźć drogi z " + se[0]
+                    + " do " + se[1] + ".");
+            return;
+        }
         String out = "";
         System.out.print("Najkrótsza droga z " + se[0] + " do " + se[1] + " to: ");
         for(int i = road.size()-1; i >= 0; i--) {

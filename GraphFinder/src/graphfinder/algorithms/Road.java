@@ -28,13 +28,27 @@ public class Road {
         road.add(v);
         time = 0;
     }
+    
+    public Road (Road r) {
+        road = new ArrayList();
+        road.addAll(r.getRoad());
+        time = r.getTime();
+    }
 
     public List getRoad() {
         return road;
     }
+    
+    public ALVertex getStart() {
+        return (ALVertex) road.get(0);
+    }
 
     public void nextStep(ALVertex v, double t) {
         road.add(v);
+        time += t;
+    }
+    
+    public void addTime(double t) {
         time += t;
     }
     

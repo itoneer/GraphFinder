@@ -19,10 +19,10 @@ public class ShortestOwn implements ShortestRoad {
 
     @Override
     public List road(ALVertex a, ALVertex b, AdjList l) {
-        List road = null;
-        List foundRoads = new ArrayList();
+        List road = null, r2 = new ArrayList(), foundRoads = new ArrayList();
+        Road p = new Road(a);
         double k = 0;
-        getRoads(null, a, b, foundRoads);
+        getRoads(p, a, b, foundRoads);
 
         for (Object o : foundRoads) {
             Road r = (Road) o;
@@ -33,11 +33,17 @@ public class ShortestOwn implements ShortestRoad {
 
         for (Object o : foundRoads) {
             if (((Road) o).getTime() == k) {
-                road = ((Road)o).getRoad();
+                road = ((Road) o).getRoad();
                 break;
             }
         }
-        return road;
+        if (road == null) {
+            return null;
+        }
+        for (int i = road.size()-1; i >=0; i--) {
+            r2.add(road.get(i));
+        }
+        return r2;
     }
 
     @Override
@@ -48,26 +54,26 @@ public class ShortestOwn implements ShortestRoad {
     }
 
     public void getRoads(Road p, ALVertex a, ALVertex b, List l) {
-        if (a.equals(b)) {
-            p.nextStep(a, 0.0);
-            l.add(p);
-            return;
-        }
+        Road p2;
         double t;
         for (Object o : a.getEdges()) {
+            p2 = new Road(p);
             if (!((ALEdge) o).isTraversable(a)) {
                 continue;
             }
             ALVertex v = ((ALEdge) o).getOtherEnd(a);
-            if (p != null && p.visited(v)) continue;
-            t = a.getTime() + ((ALEdge) o).getTime(a);
-            if (p != null) p.nextStep(a, t);
-            else {
-                List ls = new ArrayList();
-                ls.add(a);
-                p = new Road(ls, 0);
+            if (p.visited(v)) {
+                continue;
             }
-            getRoads(p, v, b, l);
+            if (v.equals(b)) {
+                p2.addTime(a.getTime() + ((ALEdge) o).getTime(a));
+                l.add(p2);
+                continue;
+            }
+            if (a.equals(p.getStart())) t = ((ALEdge) o).getTime(a);
+            else t = a.getTime() + ((ALEdge) o).getTime(a);
+            p2.nextStep(v, t);
+            getRoads(p2, v, b, l);
         }
     }
 
