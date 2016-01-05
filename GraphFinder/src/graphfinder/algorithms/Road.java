@@ -15,10 +15,10 @@ import java.util.List;
  */
 public class Road {
 
-    List road;
-    int time;
+    private final List road;
+    private double time;
 
-    public Road(List road, int time) {
+    public Road(List road, double time) {
         this.road = road;
         this.time = time;
     }
@@ -33,9 +33,17 @@ public class Road {
         return road;
     }
 
-    public void nextStep(ALVertex v, int t) {
+    public void nextStep(ALVertex v, double t) {
         road.add(v);
         time += t;
+    }
+    
+    public boolean visited (ALVertex v) {
+        return road.contains(v);
+    }
+    
+    public double getTime() {
+        return time;
     }
 
     @Override

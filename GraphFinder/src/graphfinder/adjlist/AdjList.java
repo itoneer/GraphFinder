@@ -132,12 +132,19 @@ public class AdjList {
         return out;
     }
 
+    /**
+     * Checks whether the edge can be traversed from a to b.
+     * 
+     * @param a start vertex
+     * @param b end vertex
+     * @return false if b is a source vertex and the edge is not two-way, true otherwise
+     */
     public boolean isTraversable(ALVertex a, ALVertex b) {
         if (!areNeighbors(a, b)) {
             return false;
         } else {
             ALEdge e = a.getNeighbor(b);
-            return e.getSource().equals(a) || (e.getSource().equals(b) && e.isTwoWay());
+            return e.isTraversable(a);
         }
     }
 

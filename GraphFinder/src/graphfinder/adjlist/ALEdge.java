@@ -56,8 +56,12 @@ public class ALEdge {
         return speed2;
     }
 
-    public boolean end(ALVertex v) {
+    public boolean end (ALVertex v) {
         return source.equals(v) || dest.equals(v);
+    }
+    
+    public boolean isTraversable (ALVertex a) {
+        return source.equals(a) || (dest.equals(a) && twoway);
     }
 
     @Override

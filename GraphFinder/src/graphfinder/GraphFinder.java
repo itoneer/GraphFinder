@@ -47,11 +47,20 @@ public class GraphFinder {
             System.out.println("Wystąpił błąd pliku.");
             return;
         }
-        List road = new ArrayList();
+        List road;
         ShortestRoad d;
-        if (args.length == 1 || args[1].equals("-d") || args[1].equals("-D"))
-        d = new ShortestDijkstra();
-        else d = new ShortestOwn(); //tu dopisać algorytm własny
+        if (args[1].equals("-s") || args[1].equals("-S"))
+            d = new ShortestOwn();
+        else if (args.length == 1 || args[1].equals("-d") || args[1].equals("-D"))
+            d = new ShortestDijkstra();
+        else {
+            System.out.println("GraphFinder - wyszukiwanie najkrótszej drogi w grafie");
+            System.out.println("Działanie:");
+            System.out.println("GraphFinder [plik_wej] <-d|-s>");
+            System.out.println("-d - wyszukiwanie algorytmem Dijkstry (domyślnie)");
+            System.out.println("-s - wyszukiwanie algorytmem własnym");
+            return;
+        }
         String [] se;
         
         try {
